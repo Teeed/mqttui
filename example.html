@@ -1,0 +1,72 @@
+
+<!DOCTYPE html> 
+<html>
+<head>
+	<title>Page Title</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>s
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/paho-mqtt/1.0.2/mqttws31.min.js" type="text/javascript"></script>
+	<script src="mqttui.js" type="text/javascript"></script>
+</head>
+
+<body>
+<div data-role="page" id="roomcontrolpage">
+	<div data-role="header">
+		<h1 id="name">Example panel</h1>
+	</div><!-- /header -->
+
+	<div role="main" class="ui-content">
+		<div id="ExamplePanelMenu"></div>
+		<div class="control">
+
+			<label for="gain-slider-softroom">Gain:</label>
+			<input type="range" name="gain-slider-softroom" id="gain-slider-softroom" data-mqtt="mixer/softroom/gain" value="0" min="0" max="24" step="0.01" data-highlight="true">
+	
+			<label for="mute-checkbox-softroom">Mute:</label>
+			<input type="checkbox" data-role="flipswitch" name="mute-checkbox-softroom"  data-mqtt="mixer/softroom/mute" id="mute-checkbox-softroom">
+
+			<fieldset data-role="controlgroup">
+				<legend>Source:</legend>
+
+				<input type="radio" name="source-radio-softroom" id="source-radio-softroom-raspi"  data-mqtt="mixer/softroom/source" value="raspi">
+				<label for="source-radio-softroom-raspi">RPi</label>
+				
+				<input type="radio" name="source-radio-softroom" id="source-radio-softroom-chromecast" data-mqtt="mixer/softroom/source" value="chromecast">
+				<label for="source-radio-softroom-chromecast">Chromecast</label>
+
+				<input type="radio" name="source-radio-softroom" id="source-radio-softroom-other" data-mqtt="mixer/softroom/source" value="other">
+				<label for="source-radio-softroom-other">Jack LabElektroniczny</label>
+			</fieldset>
+
+		</div>
+	</div><!-- /content -->
+</div><!-- /page -->
+
+<script type="text/javascript">
+var host = "host";
+var port = 8083;
+var username = "user";
+var password = "pass"
+
+function loading(text) {
+	$.mobile.loading('show', {text: text, textVisible: true});
+}
+
+function hideloading() {
+	$.mobile.loading('hide');
+}
+
+
+$(document).ready(function(){
+	$("input[data-mqtt]").mqttUI();
+
+	MQTTUI.connect(host, port, username, password, 'mixer/');
+});
+
+</script>
+</body>
+</html>
